@@ -1,0 +1,59 @@
+# Documentation navigation (order matters). Paths are relative to docs/ without .md.
+- title: Getting started
+  pages:
+    - getting-started/introduction
+    - getting-started/installation
+    - getting-started/quickstart
+    - getting-started/structure
+    - getting-started/configuration
+- title: The basics
+  pages:
+    - basics/routing
+    - basics/middleware
+    - basics/controllers
+    - basics/requests
+    - basics/views
+    - basics/components
+    - basics/live-components
+    - basics/assets
+    - basics/errors-logging
+- title: Database
+  pages:
+    - database/getting-started
+    - database/query-builder
+    - database/models
+    - database/relationships
+    - database/migrations
+    - database/seeding-factories
+    - database/postgres
+- title: Security
+  pages:
+    - security/authentication
+    - security/authorization
+    - security/protection
+- title: Digging deeper
+  pages:
+    - digging-deeper/cache
+    - digging-deeper/events
+    - digging-deeper/queues
+    - digging-deeper/scheduler
+    - digging-deeper/mail
+    - digging-deeper/notifications
+    - digging-deeper/storage
+    - digging-deeper/i18n
+    - digging-deeper/concurrency
+    - digging-deeper/http-client
+    - digging-deeper/websockets
+    - digging-deeper/workflows
+    - digging-deeper/billing
+    - digging-deeper/api-docs
+- title: Observability
+  pages:
+    - observability/profiler
+    - observability/opentelemetry
+- title: Tooling
+  pages:
+    - tooling/cli
+    - tooling/testing
+    - tooling/deployment
+    - tooling/ai

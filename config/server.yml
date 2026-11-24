@@ -1,0 +1,4 @@
+host: ${HOST:-127.0.0.1}
+port: ${PORT:-3000}
+when@production:
+  host: 0.0.0.0

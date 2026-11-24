@@ -1,0 +1,59 @@
+en:
+  nav:
+    docs: Docs
+    features: Features
+    ai: AI-native
+    playground: Playground
+    start: Get started
+  hero:
+    eyebrow: The Crystal web framework
+    title: "Forged in the dark.<br>Built to last."
+    lead: "Silth is a batteries-included MVC framework for Crystal: the productivity of Laravel and Rails, the rigour of Symfony, the speed of a compiled language — with zero third-party dependencies."
+    cta: Read the docs
+    cta2: See the features
+    copied: Copied
+  stats:
+    deps: third-party shards
+    drivers: native database drivers
+    modules: modules in the box
+    binary: single binary to deploy
+  showcase:
+    title: Readable by humans. Checked by the compiler.
+    lead: Crystal reads like Ruby and runs like C. Silth turns small declarations into fast, type-checked code — perfect when an AI agent writes part of it and you review the rest.
+    routes: Routes
+    model: Model
+    controller: Controller
+    live: Live component
+  features:
+    title: Everything in the box
+    lead: No plugin hunting, no fragile dependency tree. Every module below is maintained in the framework, on top of Crystal's standard library.
+  groups:
+    http: HTTP & views
+    data: Data
+    security: Security
+    services: Services
+    realtime: Real-time
+    ops: Observability & tooling
+  ai:
+    title: Built for the age of coding agents
+    lead: Generated apps ship with AGENTS.md, a Claude skill and machine-readable tooling. The documentation is published as llms.txt.
+    agents: Every app gets an AGENTS.md and CLAUDE.md describing commands, layout and conventions.
+    skills: A Claude skill (.claude/skills/silth) with the framework cheat sheet ships with every project.
+    llms: "/llms.txt and /llms-full.txt, plus every docs page as raw Markdown (.md)."
+    json: "silth routes --json, OpenAPI specs and precise compiler errors keep agents on track."
+  demo:
+    title: Live components, no JavaScript
+    lead: This widget is a Silth live component. Its state lives on the server; your browser only receives HTML diffs over a WebSocket.
+  cta:
+    title: Enter the abyss
+    lead: Create your first application in under a minute.
+  footer:
+    tagline: A dark, elegant web framework for Crystal.
+    made: Made with Silth, of course.
+  docs:
+    search: Search the docs…
+    on_page: On this page
+    markdown: View as Markdown
+    edit: Edit on GitHub
+    previous: Previous
+    next: Next

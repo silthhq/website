@@ -1,0 +1,59 @@
+fr:
+  nav:
+    docs: Documentation
+    features: Fonctionnalités
+    ai: IA
+    playground: Démo
+    start: Commencer
+  hero:
+    eyebrow: Le framework web pour Crystal
+    title: "Forgé dans l'ombre.<br>Bâti pour durer."
+    lead: "Silth est un framework MVC complet pour Crystal : la productivité de Laravel et Rails, la rigueur de Symfony, la vitesse d'un langage compilé — sans aucune dépendance tierce."
+    cta: Lire la documentation
+    cta2: Voir les fonctionnalités
+    copied: Copié
+  stats:
+    deps: dépendance tierce
+    drivers: drivers de base de données natifs
+    modules: modules intégrés
+    binary: binaire unique à déployer
+  showcase:
+    title: Lisible par les humains. Vérifié par le compilateur.
+    lead: Crystal se lit comme Ruby et s'exécute comme du C. Silth transforme de petites déclarations en code rapide et typé — idéal quand un agent IA en écrit une partie et que vous relisez le reste.
+    routes: Routes
+    model: Modèle
+    controller: Contrôleur
+    live: Live component
+  features:
+    title: Tout est inclus
+    lead: Pas de chasse aux plugins, pas d'arbre de dépendances fragile. Chaque module ci-dessous est maintenu dans le framework, au-dessus de la bibliothèque standard de Crystal.
+  groups:
+    http: HTTP & vues
+    data: Données
+    security: Sécurité
+    services: Services
+    realtime: Temps réel
+    ops: Observabilité & outillage
+  ai:
+    title: Pensé pour l'ère des agents de code
+    lead: Les applications générées embarquent AGENTS.md, un skill Claude et un outillage lisible par les machines. La documentation est publiée en llms.txt.
+    agents: Chaque application reçoit un AGENTS.md et un CLAUDE.md décrivant commandes, structure et conventions.
+    skills: Un skill Claude (.claude/skills/silth) avec l'aide-mémoire du framework est livré dans chaque projet.
+    llms: "/llms.txt et /llms-full.txt, et chaque page de doc en Markdown brut (.md)."
+    json: "silth routes --json, les specs OpenAPI et des erreurs de compilation précises guident les agents."
+  demo:
+    title: Des live components, sans JavaScript
+    lead: Ce widget est un live component Silth. Son état vit sur le serveur ; votre navigateur ne reçoit que des différences HTML via WebSocket.
+  cta:
+    title: Entrez dans l'abîme
+    lead: Créez votre première application en moins d'une minute.
+  footer:
+    tagline: Un framework web sombre et élégant pour Crystal.
+    made: Propulsé par Silth, évidemment.
+  docs:
+    search: Rechercher dans la doc…
+    on_page: Sur cette page
+    markdown: Voir en Markdown
+    edit: Modifier sur GitHub
+    previous: Précédent
+    next: Suivant

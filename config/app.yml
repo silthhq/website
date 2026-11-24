@@ -1,0 +1,7 @@
+name: Silth
+url: ${APP_URL:-https://silth.dev}
+version: 0.1.0
+debug: false
+when@development:
+  debug: true
+  url: http://localhost:3000

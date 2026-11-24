@@ -1,0 +1,21 @@
+<div class="forge">
+  <div class="forge-runes">
+    <% ForgeComponent::RUNES.each do |key, glyph| %>
+      <button type="button" class="rune" silth-click="add" silth-args='"<%= key %>"' title="<%= key %>"><span><%= glyph %></span><small><%= key %></small></button>
+    <% end %>
+  </div>
+  <div class="forge-altar">
+    <div class="forge-slots">
+      <% 5.times do |i| %>
+        <span class="slot <%= runes[i]? ? "filled" : "" %>"><%= runes[i]?.try { |r| ForgeComponent::RUNES[r] } %></span>
+      <% end %>
+    </div>
+    <input class="forge-name" silth-model.debounce.300ms="name" value="<%= name %>" placeholder="Name your spell…" maxlength="32">
+    <p class="forge-result"><% if runes.empty? %>Choose up to five runes.<% else %><b><%= spell_name %></b> · power <%= power %><% end %></p>
+    <div class="forge-actions">
+      <button type="button" class="btn btn-glow" silth-click="forge">Forge</button>
+      <button type="button" class="btn" silth-click="clear">Clear</button>
+    </div>
+    <p class="muted small">Spells forged during this session: <%= forged %></p>
+  </div>
+</div>

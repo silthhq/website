@@ -1,0 +1,36 @@
+<% content_for :title, page.title + " · Silth docs" %>
+<% content_for :description, page.description %>
+<% content_for :body_class, "docs-page" %>
+<div class="docs">
+  <aside class="docs-nav" data-docs-nav>
+    <input class="docs-search" type="search" placeholder="<%= t("docs.search") %>" data-search autocomplete="off">
+    <div class="search-results" data-search-results hidden></div>
+    <% Site::Docs.sections.each do |section| %>
+      <div class="docs-section">
+        <h4><%= section.title %></h4>
+        <% section.pages.each do |p| %>
+          <a href="<%= p.url %>" class="<%= p.slug == page.slug ? "active" : "" %>"><%= p.title %></a>
+        <% end %>
+      </div>
+    <% end %>
+  </aside>
+  <article class="prose">
+    <p class="crumbs"><%= page.section %></p>
+    <%== page.html %>
+    <nav class="pager">
+      <% if prev = page.prev %><a href="<%= prev.url %>"><small><%= t("docs.previous") %></small><%= prev.title %></a><% else %><span></span><% end %>
+      <% if nxt = page.next %><a class="next" href="<%= nxt.url %>"><small><%= t("docs.next") %></small><%= nxt.title %></a><% end %>
+    </nav>
+  </article>
+  <aside class="docs-toc">
+    <% unless page.headings.empty? %>
+      <h4><%= t("docs.on_page") %></h4>
+      <% page.headings.each do |h| %><a class="lvl-<%= h.level %>" href="#<%= h.id %>"><%= h.text %></a><% end %>
+    <% end %>
+    <div class="toc-links">
+      <a href="<%= page.url %>.md"><%= t("docs.markdown") %></a>
+      <a href="<%= GITHUB %>/edit/main/docs/<%= page.slug %>.md"><%= t("docs.edit") %></a>
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+  </aside>
+</div>

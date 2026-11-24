@@ -1,0 +1,3 @@
+# Markdown sources of the documentation (monorepo root /docs).
+path: ${SILTH_DOCS_PATH:-../docs}
+github: https://github.com/silth-framework/silth
