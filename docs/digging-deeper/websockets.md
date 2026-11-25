@@ -39,4 +39,21 @@ Silth::Broadcast.to("orders:#{order.id}", "status", {status: "shipped"})
 Silth::Presence.list("chat:lobby")
 ```
 
-Set `realtime.pubsub: redis` (or call `Silth::PubSub.boot_redis(url)`) to fan out across several servers.
+## Several server nodes
+
+Channels, `Broadcast` and live component refreshes go through `Silth::PubSub`. In one process it is in memory; with several nodes behind a load balancer, pick an adapter in `config/realtime.yml` so every node receives every message:
+
+```yaml
+pubsub: postgres               # memory | redis | postgres
+redis_url: ${REDIS_URL:-redis://localhost:6379/0}
+connection: primary            # postgres: connection from config/database.yml
+channel: silth_pubsub
+```
+
+| Adapter | Transport | Notes |
+|---|---|---|
+| `memory` | none | single process (default) |
+| `redis` | `PUBLISH`/`SUBSCRIBE` on `channel` | `rediss://` for TLS |
+| `postgres` | `LISTEN`/`NOTIFY` on a dedicated connection | no extra service; messages over 8000 bytes go through an `UNLOGGED` table (`silth_pubsub_messages`); a message published inside a transaction is sent at commit |
+
+Listeners reconnect on their own (with a growing pause) when the connection drops; a failed publish is logged, never raised into the request. The PostgreSQL listener shows up as `silth-pubsub` in `pg_stat_activity`. In code: `Silth::PubSub.adapter = Silth::PubSub::RedisAdapter.new(url)`, or implement `Silth::PubSub::Adapter` (`publish`, `start`, `stop`) for another transport.
