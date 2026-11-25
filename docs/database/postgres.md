@@ -72,4 +72,31 @@ Product.where("settings ?? ?", "discount")        # `??` escapes the jsonb `?` o
 
 ## Locks, CTEs and LISTEN/NOTIFY
 
-`lock_for_update(skip_locked: true)` powers the database queue. `with_cte` builds common table expressions. The PostgreSQL connection exposes `wait_for_notification` for `LISTEN/NOTIFY` based integrations.
+`lock_for_update(skip_locked: true)` powers the database queue. `with_cte` builds common table expressions. The PostgreSQL connection exposes `wait_for_notification` for `LISTEN/NOTIFY` based integrations, and `pubsub: postgres` (config/realtime.yml) relays live components and channels between server nodes over it.
+
+## UNLOGGED tables: cache, sessions, logs
+
+An UNLOGGED table skips the write-ahead log: writes cost a fraction of a regular table's, and PostgreSQL empties the table after a crash (a clean restart keeps it). That is the right trade for data you can rebuild, and it saves running Redis next to the database.
+
+```yaml
+# config/cache.yml
+default: postgres
+stores:
+  postgres: { connection: primary }        # table silth_unlogged_cache
+
+# config/session.yml
+driver: postgres                           # table silth_sessions, the cookie holds a signed id
+# connection: primary
+
+# config/logging.yml
+postgres:                                  # table silth_logs, written in batches
+  connection: primary
+  level: info
+  retention_days: 14
+```
+
+- **Cache**: every operation is one statement (`INSERT … ON CONFLICT`), `add` and `increment` included, so locks, unique jobs and rate limits stay atomic across servers. Expired rows are pruned as you write.
+- **Sessions**: data stays on the server; `regenerate` and `invalidate` delete the previous row, so an old cookie stops working at logout. A crash signs everybody out.
+- **Logs**: entries are buffered and inserted by a background fiber (every second or 200 entries), never inside the request's transaction; entries from the database layer itself are skipped. Query them with SQL: `SELECT * FROM silth_logs WHERE level = 'error' ORDER BY id DESC`.
+
+Your own tables can be UNLOGGED too: `create_table :page_views, unlogged: true do |t| … end` (ignored by other databases; `db/schema.cr` keeps the flag). The tables above are created on first use and left out of `db/schema.cr`.

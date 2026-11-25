@@ -1,15 +1,17 @@
 ---
 title: Cache
-description: Memory, file, database and Redis stores with one API.
+description: Memory, file, database, PostgreSQL UNLOGGED and Redis stores with one API.
 ---
 # Cache
 
 ```yaml
 # config/cache.yml
-default: redis          # memory | file | database | redis | null
+default: redis          # memory | file | database | postgres | redis | null
 stores:
   redis: { url: "${REDIS_URL:-redis://localhost:6379/1}" }
 ```
+
+`postgres` keeps entries in an UNLOGGED PostgreSQL table, with atomic `add` and `increment` ([details](/docs/database/postgres#unlogged-tables-cache-sessions-logs)).
 
 ```crystal
 cache = Silth.cache

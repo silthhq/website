@@ -26,6 +26,7 @@
     - database/migrations
     - database/seeding-factories
     - database/postgres
+    - database/mysql
 - title: Security
   pages:
     - security/authentication

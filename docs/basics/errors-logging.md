@@ -53,4 +53,8 @@ Log.info &.emit("Invoice paid", invoice_id: invoice.id, amount: invoice.total)
 level: debug
 format: pretty   # pretty | json
 file: log/app.log
+postgres:        # also write to the UNLOGGED table silth_logs (batched, background fiber)
+  connection: primary
+  level: warn
+  retention_days: 14
 ```
