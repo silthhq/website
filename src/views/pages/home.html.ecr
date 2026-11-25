@@ -1,16 +1,15 @@
-<% content_for :title, "Silth — " + t("hero.eyebrow") %>
+<% content_for :title, "Silth · " + t("hero.eyebrow") %>
 <main>
   <section class="hero">
-    <div class="glyph-wrap"><img class="glyph" src="/logo.svg" alt="Silth" width="120" height="120"></div>
-    <p class="eyebrow"><%= t("hero.eyebrow") %></p>
+    <p class="eyebrow"><span class="eyebrow-mark"><%== LOGO %></span><%= t("hero.eyebrow") %><span class="eyebrow-sep"></span><span class="mono">v<%= Silth::VERSION %></span></p>
     <h1 class="display"><%== t("hero.title") %></h1>
     <p class="lead"><%= t("hero.lead") %></p>
     <div class="actions">
-      <a class="btn btn-glow" href="/docs/getting-started/introduction"><%= t("hero.cta") %></a>
+      <a class="btn btn-primary" href="/docs/getting-started/introduction"><%= t("hero.cta") %></a>
       <a class="btn" href="#features"><%= t("hero.cta2") %></a>
     </div>
     <div class="install" data-copy="<%= Site::Samples::INSTALL %>" data-copied="<%= t("hero.copied") %>">
-      <span class="prompt">$</span> <code><%= Site::Samples::INSTALL %></code> <button type="button" aria-label="Copy">⧉</button>
+      <span class="prompt">$</span> <code><%= Site::Samples::INSTALL %></code> <button type="button" aria-label="Copy"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
     </div>
   </section>
 
@@ -84,13 +83,13 @@
   <section class="section demo" id="demo">
     <h2 class="title"><%= t("demo.title") %></h2>
     <p class="section-lead"><%= t("demo.lead") %></p>
-    <%= live ForgeComponent %>
+    <%= live ModuleSearchComponent, locale: locale %>
   </section>
 
   <section class="section final">
     <h2 class="display small"><%= t("cta.title") %></h2>
     <p class="lead"><%= t("cta.lead") %></p>
     <%= code("silth new my_app --db=postgres\ncd my_app && shards install\nsilth g scaffold Post title:string 'body:text?'\nsilth db:migrate && silth serve", "bash") %>
-    <a class="btn btn-glow" href="/docs/getting-started/quickstart">Quickstart →</a>
+    <a class="btn btn-primary" href="/docs/getting-started/quickstart">Quickstart</a>
   </section>
 </main>

@@ -3,12 +3,11 @@ fr:
     docs: Documentation
     features: Fonctionnalités
     ai: IA
-    playground: Démo
     start: Commencer
   hero:
     eyebrow: Le framework web pour Crystal
-    title: "Forgé dans l'ombre.<br>Bâti pour durer."
-    lead: "Silth est un framework MVC complet pour Crystal : la productivité de Laravel et Rails, la rigueur de Symfony, la vitesse d'un langage compilé — sans aucune dépendance tierce."
+    title: "Des applications web en Crystal,<br>tout est inclus."
+    lead: "Silth est un framework MVC complet pour Crystal : la productivité de Rails et Laravel, la rigueur de Symfony et la vitesse d'un langage compilé. Aucune dépendance tierce."
     cta: Lire la documentation
     cta2: Voir les fonctionnalités
     copied: Copié
@@ -19,7 +18,7 @@ fr:
     binary: binaire unique à déployer
   showcase:
     title: Lisible par les humains. Vérifié par le compilateur.
-    lead: Crystal se lit comme Ruby et s'exécute comme du C. Silth transforme de petites déclarations en code rapide et typé — idéal quand un agent IA en écrit une partie et que vous relisez le reste.
+    lead: Crystal se lit comme Ruby et s'exécute comme du C. Silth transforme de petites déclarations en code rapide et typé, ce qui aide beaucoup quand un agent IA en écrit une partie et que vous relisez le reste.
     routes: Routes
     model: Modèle
     controller: Contrôleur
@@ -43,12 +42,15 @@ fr:
     json: "silth routes --json, les specs OpenAPI et des erreurs de compilation précises guident les agents."
   demo:
     title: Des live components, sans JavaScript
-    lead: Ce widget est un live component Silth. Son état vit sur le serveur ; votre navigateur ne reçoit que des différences HTML via WebSocket.
+    lead: Ce champ de recherche est un live component Silth. Le filtrage tourne sur le serveur ; votre navigateur ne reçoit que des différences HTML via WebSocket.
+    placeholder: "Chercher un module : cache, jwt, vector…"
+    none: Aucun module ne correspond.
+    try: Essayez
   cta:
-    title: Entrez dans l'abîme
+    title: Démarrer un projet
     lead: Créez votre première application en moins d'une minute.
   footer:
-    tagline: Un framework web sombre et élégant pour Crystal.
+    tagline: Le framework web pour Crystal.
     made: Propulsé par Silth, évidemment.
   docs:
     search: Rechercher dans la doc…

@@ -1,0 +1,20 @@
+<div class="search-demo">
+  <label class="search-bar">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" silth-model.debounce.150ms="q" value="<%= q %>" placeholder="<%= Silth::I18n.t("demo.placeholder", locale: locale) %>" aria-label="<%= Silth::I18n.t("demo.placeholder", locale: locale) %>" autocomplete="off">
+    <span class="search-count"><%= matches.size %> / <%= total %></span>
+  </label>
+  <div class="search-chips">
+    <span class="muted small"><%= Silth::I18n.t("demo.try", locale: locale) %></span>
+    <% SUGGESTIONS.each do |term| %>
+      <button type="button" class="chip <%= q == term ? "active" : "" %>" silth-click="pick" silth-args='"<%= term %>"'><%= term %></button>
+    <% end %>
+    <% unless q.empty? %><button type="button" class="chip ghost" silth-click="clear" aria-label="Clear">×</button><% end %>
+  </div>
+  <ul class="search-results-list">
+    <% matches.first(6).each do |(group, item)| %>
+      <li><b><%= item.name %></b><span><%= label(item) %></span><small><%= Silth::I18n.t("groups.#{group}", locale: locale) %></small></li>
+    <% end %>
+  </ul>
+  <% if matches.empty? %><p class="muted search-none"><%= Silth::I18n.t("demo.none", locale: locale) %></p><% end %>
+</div>
