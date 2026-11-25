@@ -57,7 +57,7 @@ flash["notice"] = "Saved"     # next request
 flash.now["alert"] = "Oops"   # this render
 ```
 
-Sessions are stored in an encrypted cookie by default (`config/session.yml`, `driver: cache` for server-side storage).
+Sessions are stored in an encrypted cookie by default (`config/session.yml`): `driver: cache` keeps them in the cache store, `driver: postgres` in an UNLOGGED PostgreSQL table. With server-side drivers, `regenerate` and `invalidate` delete the previous session, so an old cookie is useless after login or logout.
 
 ## Cookies
 

@@ -93,7 +93,7 @@ Types map to the best native type of each database (e.g. `json` → `JSONB` on P
 
 ## Schema helpers
 
-`add_column`, `remove_column`, `rename_column`, `change_column`, `add_index` (`using: "gin"`, `opclass:`, `where:`), `remove_index`, `add_foreign_key` (`on_delete:`, `on_update:`, `name:`), `remove_foreign_key`, `rename_table`, `drop_table`, `enable_extension "vector"`, `disable_extension`, `execute "raw SQL"`. In `create_table`: `t.foreign_key :author_id, :users`, `t.primary_key [:post_id, :tag_id]`, `generated: "expression"` on any column, `default: Silth::DB::Raw.new("SQL expression")`.
+`add_column`, `remove_column`, `rename_column`, `change_column`, `add_index` (`using: "gin"`, `opclass:`, `where:`), `remove_index`, `add_foreign_key` (`on_delete:`, `on_update:`, `name:`), `remove_foreign_key`, `rename_table`, `drop_table`, `enable_extension "vector"`, `disable_extension`, `execute "raw SQL"`. `create_table :x, unlogged: true` (PostgreSQL UNLOGGED table). In `create_table`: `t.foreign_key :author_id, :users`, `t.primary_key [:post_id, :tag_id]`, `generated: "expression"` on any column, `default: Silth::DB::Raw.new("SQL expression")`.
 
 ## Commands
 
