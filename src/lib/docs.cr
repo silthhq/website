@@ -46,7 +46,7 @@ module Site::Docs
   @@loaded_at = Time.unix(0)
 
   def self.root : String
-    Silth.config.string("docs.path", "../docs")
+    Silth.config.string("docs.path", "docs")
   end
 
   def self.load : Nil

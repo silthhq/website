@@ -1,7 +1,7 @@
 abstract class ApplicationController < Silth::Controller
   LAYOUT = "layouts/site"
 
-  GITHUB = "https://github.com/silth-framework/silth"
+  GITHUB = "https://github.com/silthhq/framework"
 
   def locale : String
     ctx.locale

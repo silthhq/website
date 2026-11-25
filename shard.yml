@@ -9,7 +9,8 @@ targets:
 
 dependencies:
   silth:
-    path: ../framework
+    github: silthhq/framework
+    branch: main
 
 crystal: ">= 1.22.0"
 license: MIT

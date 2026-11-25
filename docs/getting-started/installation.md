@@ -13,8 +13,8 @@ description: Install Crystal and the silth CLI, then create an application.
 ## Install the CLI
 
 ```bash
-git clone https://github.com/silth-framework/silth.git
-cd silth/framework
+git clone https://github.com/silthhq/framework.git
+cd framework
 shards build silth --release
 sudo cp bin/silth /usr/local/bin/
 silth version
@@ -34,7 +34,7 @@ silth serve
 Open `http://localhost:3000`. The development profiler lives at `/_silth/profiler` and the API reference at `/docs/api`.
 
 > [!TIP]
-> Working on the framework itself? Point the app to your checkout with `silth new blog --path-to-silth=../silth/framework`.
+> Working on the framework itself? Point the app to your checkout with `silth new blog --path-to-silth=../framework`.
 
 ## Editor setup
 

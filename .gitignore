@@ -1,0 +1,13 @@
+/lib/
+/bin/
+/.shards/
+/public/assets/
+/dist/
+/tmp/
+/db/*.sqlite3*
+# Local co-development with a framework checkout (see README)
+/shard.override.yml
+*.dwarf
+.DS_Store
+.env
+.env.local

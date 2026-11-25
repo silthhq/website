@@ -21,7 +21,7 @@ Checklist:
 
 ## Docker
 
-Every app ships a multi-stage `Dockerfile` built on the official images: `ghcr.io/killidia/silth-builder` (Crystal on Alpine with the static libraries and the `silth` CLI) compiles static binaries, `ghcr.io/killidia/silth-runtime` (Alpine, CA certificates, time zones, an unprivileged `app` user, a `HEALTHCHECK` on `/up`) runs them. The result is a small image with `/app/bin/<app>` (web) and `/app/bin/cli` (migrations, workers, scheduler).
+Every app ships a multi-stage `Dockerfile` built on the official images: `ghcr.io/silthhq/builder` (Crystal on Alpine with the static libraries and the `silth` CLI) compiles static binaries, `ghcr.io/silthhq/runtime` (Alpine, CA certificates, time zones, an unprivileged `app` user, a `HEALTHCHECK` on `/up`) runs them. The result is a small image with `/app/bin/<app>` (web) and `/app/bin/cli` (migrations, workers, scheduler).
 
 ```bash
 docker build -t blog .
@@ -29,7 +29,7 @@ docker run -p 3000:3000 -e APP_KEY=… -e DATABASE_URL=… blog
 docker run blog /app/bin/cli queue:work
 ```
 
-Use other base images with `--build-arg SILTH_BUILDER=… --build-arg SILTH_RUNTIME=…` (for instance `crystallang/crystal:1.22-alpine` with `sqlite-static`). The images are built from `docker/` in the Silth repository for amd64 and arm64.
+Use other base images with `--build-arg SILTH_BUILDER=… --build-arg SILTH_RUNTIME=…` (for instance `crystallang/crystal:1.22-alpine` with `sqlite-static`). The images are built from `docker/` in silthhq/framework for amd64 and arm64.
 
 ## silth deploy
 
