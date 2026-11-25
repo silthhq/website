@@ -58,6 +58,8 @@ connections:
 
 MariaDB accounts use `mysql_native_password`; its `ed25519` plugin is not supported yet.
 
+Accounts using `mysql_clear_password` (LDAP, PAM) receive the password as is, so the driver only sends it over TLS. If the server asks for it on plain TCP the connection fails, unless the URL opts in with `allow_cleartext_password=true` (a man in the middle could otherwise request it with an auth switch).
+
 ## Options
 
 | URL parameter | Default | Effect |
@@ -66,5 +68,6 @@ MariaDB accounts use `mysql_native_password`; its `ed25519` plugin is not suppor
 | `statement_cache_size=N` | `256` | prepared statements kept per connection; `0` closes each one after use |
 | `prepared_statements=false` | on | interpolate parameters client side and use the text protocol only (for proxies without prepared statement support) |
 | `server_public_key=path` | | PEM public key used for RSA authentication instead of asking the server |
+| `allow_cleartext_password=true` | off | let `mysql_clear_password` send the password without TLS |
 
 The server caps prepared statements across all connections with `max_prepared_stmt_count` (16 382 by default): keep `pool × statement_cache_size × processes` below it. When the cap is reached, the driver interpolates instead of failing.
