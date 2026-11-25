@@ -40,15 +40,6 @@ $$(".prose pre.code").forEach((pre) => {
 // Mobile navigation
 $("[data-nav-toggle]")?.addEventListener("click", () => $("[data-nav]").classList.toggle("open"));
 
-// Live demo feedback
-window.addEventListener("silth:forged", (e) => {
-  const note = document.createElement("div");
-  note.className = "forged-flash";
-  note.textContent = `✦ ${e.detail.name} forged — power ${e.detail.power}`;
-  document.body.appendChild(note);
-  setTimeout(() => note.remove(), 2400);
-});
-
 // Docs search (client side, index served at /docs/search.json)
 const search = $("[data-search]");
 if (search) {

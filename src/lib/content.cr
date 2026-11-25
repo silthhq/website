@@ -90,7 +90,7 @@ module Site
       ],
       "data" => [
         Item.new("ORM", "Models, relations, scopes, validations, dirty tracking", "Modèles, relations, scopes, validations, suivi des modifications"),
-        Item.new("3 native drivers", "PostgreSQL, MariaDB/MySQL and SQLite, written in-house", "PostgreSQL, MariaDB/MySQL et SQLite, écrits maison"),
+        Item.new("3 native drivers", "PostgreSQL, MySQL/MariaDB and SQLite, written in-house", "PostgreSQL, MySQL/MariaDB et SQLite, écrits maison"),
         Item.new("Query builder", "Fluent, dialect-aware, CTEs, locks, upserts", "Fluide, multi-dialecte, CTE, verrous, upserts"),
         Item.new("Vectors & search", "pgvector similarity and full-text search", "Similarité pgvector et recherche plein texte"),
         Item.new("Migrations", "Versioned, transactional, schema builder", "Versionnées, transactionnelles, schema builder"),
@@ -122,7 +122,7 @@ module Site
         Item.new("Server-sent events", "Streaming responses in one line", "Réponses en streaming en une ligne"),
       ],
       "ops" => [
-        Item.new("Profiler", "Debug toolbar and Telescope-like dashboard", "Barre de debug et tableau de bord façon Telescope"),
+        Item.new("Profiler", "Request timeline, toolbar, N+1 and missing translation checks", "Timeline des requêtes, toolbar, détection des N+1 et traductions manquantes"),
         Item.new("OpenTelemetry", "OTLP traces and metrics, auto-instrumented", "Traces et métriques OTLP, auto-instrumentées"),
         Item.new("Logging", "Structured, request-correlated, JSON in prod", "Structurés, corrélés, JSON en production"),
         Item.new("CLI", "Generators, scaffolds, custom commands", "Générateurs, scaffolds, commandes personnalisées"),

@@ -3,12 +3,11 @@ en:
     docs: Docs
     features: Features
     ai: AI-native
-    playground: Playground
     start: Get started
   hero:
     eyebrow: The Crystal web framework
-    title: "Forged in the dark.<br>Built to last."
-    lead: "Silth is a batteries-included MVC framework for Crystal: the productivity of Laravel and Rails, the rigour of Symfony, the speed of a compiled language — with zero third-party dependencies."
+    title: "Web apps in Crystal,<br>everything in the box."
+    lead: "Silth is a full MVC framework for Crystal: the productivity of Rails and Laravel, the rigour of Symfony and the speed of a compiled language. No third-party dependency."
     cta: Read the docs
     cta2: See the features
     copied: Copied
@@ -19,7 +18,7 @@ en:
     binary: single binary to deploy
   showcase:
     title: Readable by humans. Checked by the compiler.
-    lead: Crystal reads like Ruby and runs like C. Silth turns small declarations into fast, type-checked code — perfect when an AI agent writes part of it and you review the rest.
+    lead: Crystal reads like Ruby and runs like C. Silth turns small declarations into fast, type-checked code, which helps a lot when an AI agent writes part of it and you review the rest.
     routes: Routes
     model: Model
     controller: Controller
@@ -43,12 +42,15 @@ en:
     json: "silth routes --json, OpenAPI specs and precise compiler errors keep agents on track."
   demo:
     title: Live components, no JavaScript
-    lead: This widget is a Silth live component. Its state lives on the server; your browser only receives HTML diffs over a WebSocket.
+    lead: This search box is a Silth live component. The filtering runs on the server; your browser only receives HTML diffs over a WebSocket.
+    placeholder: "Search a module: cache, jwt, vector…"
+    none: No module matches this search.
+    try: Try
   cta:
-    title: Enter the abyss
+    title: Start a project
     lead: Create your first application in under a minute.
   footer:
-    tagline: A dark, elegant web framework for Crystal.
+    tagline: The web framework for Crystal.
     made: Made with Silth, of course.
   docs:
     search: Search the docs…

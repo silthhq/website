@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#07080c">
-  <title><%= yield_content(:title, "Silth — the dark, elegant web framework for Crystal") %></title>
+  <title><%= yield_content(:title, "Silth · the web framework for Crystal") %></title>
   <meta name="description" content="<%= yield_content(:description, "Silth is a batteries-included MVC web framework for Crystal with zero third-party dependencies.") %>">
   <meta property="og:title" content="<%= yield_content(:title, "Silth") %>">
   <meta property="og:type" content="website">
@@ -16,24 +16,23 @@
   <%= silth_scripts %>
 </head>
 <body class="<%= yield_content(:body_class, "") %>">
-  <div class="aura" aria-hidden="true"></div>
   <header class="nav">
-    <a class="wordmark" href="<%= locale == "fr" ? "/fr" : "/" %>"><img src="/logo.svg" alt="" width="26" height="26"><span>SILTH</span></a>
-    <button class="nav-toggle" aria-label="Menu" data-nav-toggle>☰</button>
+    <a class="wordmark" href="<%= locale == "fr" ? "/fr" : "/" %>"><%== LOGO %><span>silth</span></a>
+    <button class="nav-toggle" aria-label="Menu" data-nav-toggle><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <nav class="nav-links" data-nav>
       <a href="/docs" class="<%= active_class("/docs") %>"><%= t("nav.docs") %></a>
       <a href="<%= locale == "fr" ? "/fr" : "/" %>#features"><%= t("nav.features") %></a>
       <a href="/docs/tooling/ai"><%= t("nav.ai") %></a>
       <a href="<%= GITHUB %>" rel="noopener">GitHub</a>
       <a class="lang" href="<%= other_locale == "fr" ? "/fr" : "/en" %>" hreflang="<%= other_locale %>"><%= other_locale.upcase %></a>
-      <a class="btn btn-glow" href="/docs/getting-started/installation"><%= t("nav.start") %></a>
+      <a class="btn btn-primary btn-sm" href="/docs/getting-started/installation"><%= t("nav.start") %></a>
     </nav>
   </header>
   <%= content %>
   <footer class="footer">
     <div class="footer-inner">
       <div>
-        <a class="wordmark" href="/"><img src="/logo.svg" alt="" width="22" height="22"><span>SILTH</span></a>
+        <a class="wordmark" href="/"><%== LOGO %><span>silth</span></a>
         <p class="muted"><%= t("footer.tagline") %></p>
       </div>
       <nav>
