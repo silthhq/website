@@ -48,6 +48,46 @@ posts.each { |p| puts "#{p.title} by #{p.user.try(&.name)} — #{p.tags.map(&.na
 
 The profiler flags duplicated queries so N+1 problems are easy to spot.
 
+## Polymorphic relations
+
+One table can belong to several models: the row stores the class name and the id.
+
+```crystal
+class Comment < ApplicationModel
+  primary_key
+  belongs_to commentable : Post | Video, polymorphic: true  # commentable_type + commentable_id
+end
+
+class Post < ApplicationModel
+  primary_key
+  has_many comments : Comment, as: commentable
+end
+
+class Video < ApplicationModel
+  primary_key
+  has_one comment : Comment, as: commentable
+end
+
+comment = Comment.create!(body: "Nice", commentable: post)
+comment.commentable_type                 # "Post"
+comment.commentable.as(Post)             # Silth::Model? (cast to the class you expect)
+post.comments.create!(body: "Again")     # type and id preset
+Comment.includes(:commentable).to_a      # one query per class
+```
+
+The migration needs both columns: `t.string :commentable_type` and `t.bigint :commentable_id` (plus an index on the pair). The type list (`Post | Video`) is optional: without it any model is accepted; with it, assigning another class raises `ArgumentError`. With a single class (`belongs_to imageable : User, polymorphic: true`) the reader returns that class. Polymorphic keys are `Int64` primary keys.
+
+## Counter caches
+
+```crystal
+class Comment < ApplicationModel
+  belongs_to post : Post, counter_cache: true               # posts.comments_count
+  belongs_to author : User, counter_cache: :comments_written # custom column
+end
+```
+
+The parent's counter (`t.integer :comments_count, null: false, default: 0`) is incremented on create, decremented on destroy, moved when the foreign key changes, and follows soft deletes and `restore`. Updates go straight to the counter column (no callbacks, no lock check), inside the child's transaction. Counter caches are not available on polymorphic relations.
+
 ## Conventions
 
 | Declaration | Foreign key | Table |

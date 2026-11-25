@@ -102,6 +102,23 @@ post.assign(params.permit(:title, :body, from: :post))   # strings are cast to c
 post.assign(title: "x", views: 3)                         # typed
 ```
 
+## Optimistic locking
+
+```crystal
+class Order < ApplicationModel
+  primary_key
+  column total : Float64
+  optimistic_locking               # needs `t.lock_version` in the migration
+end
+
+a = Order.find(1)
+b = Order.find(1)
+a.update!(total: 10.0)             # lock_version 0 → 1
+b.update!(total: 12.0)             # raises Silth::ORM::StaleObjectError
+```
+
+Every update and destroy checks that `lock_version` still holds the value read with the record and increments it. Rescue `StaleObjectError`, `reload` and let the user retry. `optimistic_locking column: version` uses another column.
+
 ## Serialization
 
 `post.to_json` writes every non-hidden column plus extra selected columns (`distance`, aggregates). `post.attributes` returns a hash, `post.read_attribute("title")`/`write_attribute` work dynamically.
