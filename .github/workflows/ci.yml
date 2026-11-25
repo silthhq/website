@@ -1,0 +1,30 @@
+# Builds the site against the framework's main branch and exports it.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  repository_dispatch:
+    types: [framework-updated]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: "1.22"
+      - run: sudo apt-get update -q && sudo apt-get install -y -q libsqlite3-dev
+      - run: shards install
+      - run: crystal build src/cli.cr -o bin/cli
+      - name: Export the static site
+        run: |
+          SILTH_ENV=production bin/cli export -o dist
+          test -s dist/index.html
+          test -s dist/llms.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
