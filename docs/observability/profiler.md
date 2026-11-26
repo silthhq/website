@@ -10,6 +10,12 @@ In development every HTML page gets a **toolbar** at the bottom: status and hand
 - **Click** it to open the matching panel of the profile in a new tab, so the page you are testing stays as it is.
 - **Fold** the bar with the chevron on the right: it becomes an icon in the bottom right corner (with a status dot) until you click it again. The choice is remembered per browser.
 
+## Sub-requests
+
+Requests a page makes after it loaded get their own profile and show up in the toolbar's **sub-requests** item: `fetch` and `XMLHttpRequest` calls to your app (any response with an `X-Silth-Profile` header) and every live component action, over the WebSocket or the HTTP fallback (`LIVE CounterComponent#increment`). Hover the item to see the method, status, URL and time of each one, newest first; click one to open its profile. The item turns amber or red when one of them failed.
+
+Live actions are also listed on the dashboard's Requests page, with the method `LIVE`.
+
 ## Dashboard
 
 The dashboard lives at **`/_silth/profiler`**: a sidebar with the sections and the last requests, and the content on the right.
@@ -43,9 +49,37 @@ keep: 200                          # profiles kept in memory
 slow_query_ms: 100
 query_sources: true                # the line of your code behind each query
 editor: ${SILTH_EDITOR:-vscode}    # file:line links open in your editor
+budget_ms: 300                     # performance budget of every route (none by default)
 when@development:
   enabled: true
+  persist: true                    # keep profiles across restarts (tmp/profiler.sqlite3)
 ```
+
+## Keeping profiles across restarts
+
+`silth serve` rebuilds and restarts the app on every change, which used to empty the profiler. With `persist: true` (on by default in development for new apps), profiles are also written to `tmp/profiler.sqlite3` (`persist_path:`), through a SQLite connection of their own, and loaded back at boot: the last `keep` requests are still there after a rebuild. **Clear** in the sidebar empties both.
+
+## Performance budgets
+
+```yaml
+# config/profiler.yml
+budget_ms: 300                   # every route
+budgets:
+  "GET /posts": 120              # a route, as `silth routes` prints it
+  "PostsController#show": 80     # a handler, or a live action ("CounterComponent#increment")
+budget_strict: false             # true: a spec fails when a request goes over
+```
+
+The handler's budget wins over the route's, which wins over `budget_ms`. In development, a request over budget turns the toolbar's time item red (`420 ms / 300`) and gets an "over budget" badge on the dashboard.
+
+In the test suite, every request made with `Silth::Testing.client` is checked against the same budgets. The ones over budget are listed at the end of the run, with the spec line that made them:
+
+```text
+Performance budgets exceeded (config/profiler.yml):
+  GET /posts  142.3 ms > 120.0 ms  (GET /posts, spec/requests/posts_spec.cr:14)
+```
+
+`budget_strict: true` (or `SILTH_BUDGETS=strict silth test`, handy in CI) fails the example instead.
 
 Each response carries an `X-Silth-Profile` header with the profile token, handy when debugging APIs: open `/_silth/profiler/<token>`.
 
