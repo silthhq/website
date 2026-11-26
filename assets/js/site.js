@@ -40,12 +40,12 @@ $$(".prose pre.code").forEach((pre) => {
 // Mobile navigation
 $("[data-nav-toggle]")?.addEventListener("click", () => $("[data-nav]").classList.toggle("open"));
 
-// Docs search (client side, index served at /docs/search.json)
+// Docs search (client side, one index per docs version: /docs/search.json, /docs/0.1/search.json…)
 const search = $("[data-search]");
 if (search) {
   const results = $("[data-search-results]");
   let index = null;
-  const load = async () => (index ||= await (await fetch("/docs/search.json")).json());
+  const load = async () => (index ||= await (await fetch(search.dataset.searchIndex || "/docs/search.json")).json());
   const score = (doc, terms) => terms.reduce((s, t) => {
     const title = doc.title.toLowerCase(), heads = doc.headings.join(" ").toLowerCase(), text = doc.text.toLowerCase();
     return s + (title.includes(t) ? 10 : 0) + (heads.includes(t) ? 4 : 0) + (text.includes(t) ? 1 : 0);

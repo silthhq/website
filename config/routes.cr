@@ -4,6 +4,7 @@ Silth.routes do
   get "/404.html", PagesController, :not_found
   get "/sitemap.xml", PagesController, :sitemap
 
+  get "/install.sh", InstallController, :show
   get "/llms.txt", LlmsController, :index
   get "/llms-full.txt", LlmsController, :full
 

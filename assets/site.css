@@ -168,6 +168,18 @@ pre.code { margin: 0; padding: 18px 20px; overflow-x: auto; font-size: .85rem; l
 .search-results a { display: block; padding: 8px 12px; border-bottom: 1px solid var(--rim); color: var(--pale); font-size: .9rem; }
 .search-results a:hover { background: var(--shell-2); text-decoration: none; }
 .search-results a small { display: block; color: var(--ash); }
+.docs-version { margin-bottom: 14px; border: 1px solid var(--rim); border-radius: 6px; background: var(--abyss); font-size: .88rem; }
+.docs-version summary { cursor: pointer; padding: 7px 12px; list-style: none; color: var(--mist); }
+.docs-version summary::-webkit-details-marker { display: none; }
+.docs-version summary::after { content: "▾"; float: right; color: var(--ash); }
+.docs-version[open] summary { border-bottom: 1px solid var(--rim); }
+.docs-version b { color: var(--pale); font: 500 .85rem var(--mono); }
+.docs-version nav a { display: block; padding: 6px 12px; color: var(--mist); font-family: var(--mono); font-size: .85rem; }
+.docs-version nav a:hover { background: var(--shell); color: var(--pale); text-decoration: none; }
+.docs-version nav a.active { color: var(--soul); }
+.docs-version small { color: var(--ash); font-family: var(--sans); }
+.version-note { margin: 0 0 22px; padding: 10px 14px; border: 1px solid var(--rim-2); border-left: 3px solid var(--ember); border-radius: 6px; background: var(--abyss); color: var(--mist); font-size: .92rem; }
+.version-note a { margin-left: 6px; white-space: nowrap; }
 .docs-section h4, .docs-toc h4 { margin: 20px 0 6px; font: 500 .78rem var(--mono); color: var(--ash); }
 .docs-section a { display: block; padding: 4px 10px; margin-left: -10px; border-radius: 6px; color: var(--mist); font-size: .92rem; }
 .docs-section a:hover { color: var(--pale); background: var(--shell); text-decoration: none; }

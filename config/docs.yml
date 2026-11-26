@@ -1,3 +1,5 @@
 # Markdown sources of the documentation.
 path: ${SILTH_DOCS_PATH:-docs}
+# Frozen copies of released versions (versions/0.1/…), made by `bin/cli docs:release 0.1`.
+versions_path: ${SILTH_DOCS_VERSIONS_PATH:-versions}
 github: https://github.com/silthhq/website
