@@ -103,7 +103,9 @@ silth db:migrate       silth db:migrate --step=1
 silth db:rollback      silth db:rollback --step=2
 silth db:status        silth db:reset       silth db:fresh --seed
 silth db:schema:dump   silth db:schema:load
-silth db:console
+silth db:console       silth db:console --connection=analytics --replica
 ```
+
+`db:console` opens the database's own client on the configured URL: `psql`, `mariadb` (or `mysql`) or `sqlite3`. The password goes through the environment (`PGPASSWORD`, `MYSQL_PWD`), never the command line; TLS settings follow the URL (`sslmode`, `ssl=true`). `--replica` opens the first read replica, `--print` shows the command without running it.
 
 Migrations run inside a transaction on PostgreSQL and SQLite (MySQL does not support transactional DDL). Applied versions are stored in `silth_migrations` with a batch number; `db:rollback` reverts the last batch.
