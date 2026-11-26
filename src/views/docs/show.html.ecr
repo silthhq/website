@@ -1,11 +1,21 @@
-<% content_for :title, page.title + " · Silth docs" %>
+<% content_for :title, page.title + " · Silth docs" + (page.version.latest? ? "" : " " + page.version.name) %>
 <% content_for :description, page.description %>
 <% content_for :body_class, "docs-page" %>
+<% if canonical = Site::Docs.latest.find(page.slug) %><% content_for :head do %><link rel="canonical" href="<%= Silth.config.string("app.url") %><%= canonical.url %>"><% end %><% end %>
 <div class="docs">
   <aside class="docs-nav" data-docs-nav>
-    <input class="docs-search" type="search" placeholder="<%= t("docs.search") %>" data-search autocomplete="off">
+    <details class="docs-version">
+      <summary aria-label="<%= t("docs.version") %>"><span class="muted"><%= t("docs.version") %></span> <b><%= page.version.label %></b><%= page.version.latest? ? " · " + t("docs.latest") : "" %></summary>
+      <nav>
+        <% Site::Docs.versions.each do |v| %>
+          <% target = v.find(page.slug) || v.first %>
+          <% if target %><a href="<%= target.url %>" class="<%= v == page.version ? "active" : "" %>" <%= v == page.version ? "aria-current=\"true\"" : "" %>><%= v.label %><% if v.latest? %> <small><%= t("docs.latest") %></small><% end %></a><% end %>
+        <% end %>
+      </nav>
+    </details>
+    <input class="docs-search" type="search" placeholder="<%= t("docs.search") %>" data-search data-search-index="<%= page.version.prefix %>/search.json" autocomplete="off">
     <div class="search-results" data-search-results hidden></div>
-    <% Site::Docs.sections.each do |section| %>
+    <% page.version.sections.each do |section| %>
       <div class="docs-section">
         <h4><%= section.title %></h4>
         <% section.pages.each do |p| %>
@@ -15,6 +25,13 @@
     <% end %>
   </aside>
   <article class="prose">
+    <% unless page.version.latest? %>
+      <% latest = Site::Docs.latest %>
+      <p class="version-note" role="note">
+        <% if page.version.edge? %><%= t("docs.edge_note") %><% else %><%= t("docs.old_note", version: page.version.name, latest: latest.name) %><% end %>
+        <a href="<%= (latest.find(page.slug) || latest.first).try(&.url) || "/docs" %>"><%= t("docs.read_latest") %></a>
+      </p>
+    <% end %>
     <p class="crumbs"><%= page.section %></p>
     <%== page.html %>
     <nav class="pager">
@@ -29,7 +46,8 @@
     <% end %>
     <div class="toc-links">
       <a href="<%= page.url %>.md"><%= t("docs.markdown") %></a>
-      <a href="<%= GITHUB_DOCS %>/edit/main/docs/<%= page.slug %>.md"><%= t("docs.edit") %></a>
+      <a href="<%= GITHUB_DOCS %>/edit/main/<%= page.source_path %>"><%= t("docs.edit") %></a>
+      <a href="<%= page.permalink %>"><%= t("docs.permalink") %></a>
       <a href="/llms.txt">llms.txt</a>
     </div>
   </aside>

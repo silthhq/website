@@ -11,6 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <%= yield_content(:head) %>
   <%= stylesheet_tag "site.css" %>
   <%= importmap_tags "site" %>
   <%= silth_scripts %>

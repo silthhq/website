@@ -4,19 +4,29 @@ class DocsController < ApplicationController
     render "docs/show", page: page
   end
 
+  # `/docs/<slug>` (latest version), `/docs/0.1/<slug>`, `/docs/edge/<slug>`,
+  # with `.md` for the Markdown source and `search.json` for a version's index.
   def show
-    path = params["path"].rstrip('/')
-    if path.ends_with?(".md")
-      page = Site::Docs.find(path.rchop(".md")) || raise Silth::NotFound.new
-      return send_body_markdown(page.markdown)
-    end
-    page = Site::Docs.find(path) || raise Silth::NotFound.new("Unknown documentation page '#{path}'")
+    version, slug = Site::Docs.resolve(params["path"].rstrip('/'))
+    return search_index(version) if slug == "search.json"
+    page = if slug.empty?
+             version.first
+           elsif slug.ends_with?(".md")
+             version.find(slug.rchop(".md")).try { |p| return send_body_markdown(p.markdown) }
+           else
+             version.find(slug)
+           end
+    page || raise Silth::NotFound.new("Unknown documentation page '#{params["path"]}'")
     render "docs/show", page: page
   end
 
   def search
+    search_index(Site::Docs.latest)
+  end
+
+  private def search_index(version : Site::Docs::Version) : Nil
     ctx.response.headers["Cache-Control"] = "public, max-age=300"
-    json Site::Docs.search_index
+    json version.search_index
   end
 
   private def send_body_markdown(markdown : String) : Nil

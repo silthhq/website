@@ -59,3 +59,9 @@ fr:
     edit: Modifier sur GitHub
     previous: Précédent
     next: Suivant
+    version: Version
+    latest: dernière
+    edge_note: "Ces pages décrivent la branche main : une partie n'est pas encore publiée."
+    old_note: "Ces pages décrivent Silth %{version}. La dernière version est la %{latest}."
+    read_latest: Lire la documentation à jour
+    permalink: Lien vers cette version

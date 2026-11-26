@@ -24,6 +24,8 @@ jobs:
           SILTH_ENV=production bin/cli export -o dist
           test -s dist/index.html
           test -s dist/llms.txt
+          test -s dist/docs/search.json
+          grep -q "SHA256SUMS" dist/install.sh
       - uses: actions/upload-artifact@v4
         with:
           name: site
