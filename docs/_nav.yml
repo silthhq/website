@@ -16,6 +16,7 @@
     - basics/views
     - basics/components
     - basics/live-components
+    - basics/ui-components
     - basics/assets
     - basics/errors-logging
 - title: Database

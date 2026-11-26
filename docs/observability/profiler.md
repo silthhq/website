@@ -25,6 +25,7 @@ The dashboard lives at **`/_silth/profiler`**: a sidebar with the sections and t
 | Requests | last requests (filter by URL, handler or status), median and slowest time, server errors |
 | Activity | jobs, mails, warnings and exceptions happening outside requests (workers, scheduler, fibers) plus failed jobs |
 | Mails | mail previews, captured and file-transport mails |
+| Components | [component previews](/docs/basics/components#previews): every scenario at several widths, with editable props |
 | Routes | every route with its middleware |
 | Schedule | scheduled tasks, next and last runs |
 | Workflows | SVG diagrams of every workflow |

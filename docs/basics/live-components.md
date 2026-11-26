@@ -54,6 +54,7 @@ Embed with `<%= live TodoListComponent %>` or mount as a page with `live "/todos
 | `silth-confirm="Sure?"` | confirmation dialog |
 | `silth-loading` | element shown while a call is pending |
 | `silth-ignore` | never morphed |
+| `silth-keep="open hidden"` | these attributes are left as the browser set them (an open dialog, a selected tab) |
 | `data-key` | stable identity for list items |
 
 ## File uploads
