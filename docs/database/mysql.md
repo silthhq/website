@@ -41,6 +41,8 @@ Both protocols return the same Crystal values:
 | `mysql_native_password` | ✓ | ✓ |
 | `caching_sha2_password` (MySQL 8 default) | ✓ | ✓ (full authentication with RSA) |
 | `sha256_password` | ✓ | ✓ (RSA) |
+| `ed25519` (MariaDB) | ✓ | ✓ (signature of the server's nonce) |
+| `parsec` (MariaDB 11.6+) | ✓ | ✓ (PBKDF2 key, signature of both nonces) |
 
 MySQL asks for the full password when its authentication cache is empty: first login of an account, after a restart or a `FLUSH PRIVILEGES`. Without TLS, Silth then fetches the server's RSA public key and sends the password encrypted with RSA-OAEP, like the official client. Fetching the key over plain TCP can be intercepted by a man in the middle, so in production use TLS or pin the key:
 
@@ -56,11 +58,15 @@ connections:
     url: mysql://app:secret@db.internal:3306/app?server_public_key=config/mysql_public_key.pem
 ```
 
-MariaDB accounts created with the `ed25519` or `parsec` plugins are not supported yet: the connection fails with `authentication plugin client_ed25519 is not supported`. Give the application account `mysql_native_password` (the MariaDB default), ideally over TLS:
+MariaDB's `ed25519` and `parsec` plugins never send the password: the client signs a nonce from the server with an Ed25519 key derived from the password (SHA-512 of the password for `ed25519`, PBKDF2-HMAC-SHA512 with a salt for `parsec`). Nothing to configure, the URL stays the same:
 
 ```sql
-ALTER USER 'app'@'%' IDENTIFIED VIA mysql_native_password USING PASSWORD('secret');
+-- MariaDB, as an administrator
+INSTALL SONAME 'auth_parsec';   -- or auth_ed25519 (MariaDB 10.4+)
+CREATE USER 'app'@'%' IDENTIFIED VIA parsec USING PASSWORD('secret');
 ```
+
+A machine in the middle cannot reuse a signature, but on plain TCP it can capture one and try passwords offline: `parsec` makes each guess cost thousands of PBKDF2 rounds, `ed25519` a single SHA-512. Prefer `parsec` and TLS. Other plugins (GSSAPI, PAM dialog) fail with `authentication plugin … is not supported`.
 
 Accounts using `mysql_clear_password` (LDAP, PAM) receive the password as is, so the driver only sends it over TLS. If the server asks for it on plain TCP the connection fails, unless the URL opts in with `allow_cleartext_password=true` (a man in the middle could otherwise request it with an auth switch).
 
