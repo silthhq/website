@@ -28,7 +28,7 @@ Each request has these panels (`?panel=` in the URL):
 | Panel | Content |
 |---|---|
 | Timeline | the path of the request on a time axis: before the action (middleware, session, CSRF, auth), the action, templates and components, every query, HTTP call, job, cache access, log line and exception, nested by containment |
-| Queries | statements with their arguments, offsets and timings; slow ones and duplicates (possible N+1) flagged |
+| Queries | statements with their arguments, offsets, timings and the line of your code that ran them; slow ones and repeats (possible N+1) flagged |
 | Logs | every log line written during the request, filterable by level |
 | Translations | every key looked up, with its locale and status: found, fallback (another locale answered) or missing |
 | Events | events, cache operations, mails, jobs, notifications, outgoing HTTP calls |
@@ -39,13 +39,43 @@ Each request has these panels (`?panel=` in the URL):
 # config/profiler.yml
 enabled: false
 toolbar: true
-keep: 200            # profiles kept in memory
+keep: 200                          # profiles kept in memory
 slow_query_ms: 100
+query_sources: true                # the line of your code behind each query
+editor: ${SILTH_EDITOR:-vscode}    # file:line links open in your editor
 when@development:
   enabled: true
 ```
 
 Each response carries an `X-Silth-Profile` header with the profile token, handy when debugging APIs: open `/_silth/profiler/<token>`.
+
+## Hunting N+1 queries
+
+Every query is traced back to the first line of **your** code that ran it (a controller, a model method, a template line), skipping the framework, shards and the standard library. The Queries panel shows it next to each statement, the timeline next to each query bar.
+
+When the same statement runs several times from the same line, that line is a loop doing one query per item: the panel lists it first, with the count and the line, and the toolbar's database item turns amber.
+
+```text
+×12  SELECT * FROM authors WHERE id = ? LIMIT 1
+     from src/views/posts/index.html.ecr:8 · to_s
+```
+
+Preload the association (`Post.includes(:author)`), load the rows in one query, or cache the result. The trace comes from the backtrace, so it needs debug information, which `silth serve` builds have. It costs a few microseconds per query; `query_sources: false` turns it off.
+
+## Editor links
+
+File and line references (queries, timeline, exceptions, the debug page) open in your editor:
+
+| `editor:` | Opens |
+|---|---|
+| `vscode` (default), `vscode-insiders`, `vscodium`, `cursor`, `windsurf` | `vscode://file/…:line` and friends |
+| `zed` | `zed://file/…:line` |
+| `idea` (any JetBrains IDE with the Toolbox) | `idea://open?file=…&line=…` |
+| `sublime`, `textmate`, `emacs`, `macvim`, `nova` | their URL schemes |
+| `"myeditor://open?path={file}&line={line}"` | any template with `{file}` and `{line}` |
+| `none` | plain text |
+
+`SILTH_EDITOR=zed silth serve` picks one without touching the config. When the app runs in a container, set `editor_root` to its path on your machine so the links point there.
 
 ## Your own events
 
