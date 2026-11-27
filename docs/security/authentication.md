@@ -20,8 +20,34 @@ class User < ApplicationModel
   column password_digest : String, hidden: true
 end
 
-user.password = "correct horse battery staple"   # bcrypt
+user.password = "correct horse battery staple"   # bcrypt or Argon2id, see below
 user.authenticate?("guess")                       # false
+```
+
+## Password hashing
+
+New passwords are hashed with bcrypt by default, or with Argon2id, the algorithm OWASP recommends:
+
+```yaml
+# config/auth.yml
+password_algorithm: argon2id    # or bcrypt
+bcrypt_cost: 12
+argon2:
+  memory: 19456                 # KiB: OWASP's 19 MiB, 2 iterations, 1 lane
+  iterations: 2
+  parallelism: 1
+rehash_on_login: true
+```
+
+Both algorithms are always verified, whatever the setting: `$2a$`/`$2b$`/`$2y$` hashes as bcrypt, `$argon2id$v=19$…` (the PHC string format every implementation writes: Rust's `argon2`, PHP's `password_hash`, libsodium, Django) as Argon2. After a successful `auth.attempt`, a password stored with another algorithm or other settings is hashed again with the current ones. So an application can raise its cost, switch algorithms, or take over the users of another application without asking anyone to reset a password.
+
+Argon2id is implemented in Crystal (with BLAKE2b), checked against RFC 9106 and OpenSSL: about 25 ms per hash with the default settings in a release build. Tests use the cheapest settings automatically.
+
+```crystal
+digest = Silth::Password.hash("secret")        # with the configured algorithm
+Silth::Password.verify("secret", digest)       # bcrypt or Argon2
+Silth::Password.needs_rehash?(digest)
+Silth::Argon2.hash("secret", memory: 65536, iterations: 3, parallelism: 4)
 ```
 
 ## Session guard
@@ -62,7 +88,14 @@ token = Silth::JWT.encode({"sub" => user.auth_id, "typ" => "User"}, secret, expi
 claims = Silth::JWT.decode(token, secret)    # verifies signature, exp and nbf
 ```
 
-Set `auth.jwt_secret` to let the token middleware accept JWTs.
+Tokens are signed with HMAC: HS256 by default, HS384 or HS512 with `algorithm:` (or `jwt_algorithm: HS512` in `config/auth.yml`). `decode` accepts the three unless you narrow it, and never `none`:
+
+```crystal
+token = Silth::JWT.encode(claims, secret, algorithm: "HS512")
+Silth::JWT.decode(token, secret, algorithms: ["HS512"])
+```
+
+Set `auth.jwt_secret` to let the token middleware accept JWTs: their `sub` claim names the user (`typ` the model, when there are several).
 
 ## Password resets & email verification
 

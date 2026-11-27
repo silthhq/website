@@ -24,6 +24,7 @@
     - database/getting-started
     - database/query-builder
     - database/models
+    - database/decimals-dates
     - database/relationships
     - database/migrations
     - database/seeding-factories

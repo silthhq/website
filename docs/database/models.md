@@ -13,6 +13,8 @@ class Post < ApplicationModel
   column slug : String
   column body : String?
   column views : Int32 = 0
+  column price : Decimal                    # NUMERIC: exact, "12.50" in JSON
+  column published_on : Date?               # DATE: "2026-11-27" in JSON
   column published : Bool = false
   column metadata : JSON::Any?
   column settings : PostSettings?           # any JSON::Serializable type
@@ -82,7 +84,7 @@ Error messages are translated (`errors.messages.*` keys).
 
 ## Hooks
 
-Override any of: `before_validation`, `after_validation`, `before_save`, `after_save`, `before_create`, `after_create`, `before_update`, `after_update`, `before_destroy`, `after_destroy`. Saves run inside a transaction.
+Override any of: `before_validation`, `after_validation`, `before_save`, `after_save`, `before_create`, `after_create`, `before_update`, `after_update`, `before_destroy`, `after_destroy`. When a model has hooks, counter caches or dependents, saves and destroys run inside a transaction; otherwise the single `INSERT … RETURNING` or `UPDATE` is atomic on its own and Silth skips `BEGIN`/`COMMIT` (decided at compile time).
 
 ## Dirty tracking
 
@@ -107,18 +109,18 @@ post.assign(title: "x", views: 3)                         # typed
 ```crystal
 class Order < ApplicationModel
   primary_key
-  column total : Float64
+  column total : Decimal
   optimistic_locking               # needs `t.lock_version` in the migration
 end
 
 a = Order.find(1)
 b = Order.find(1)
-a.update!(total: 10.0)             # lock_version 0 → 1
-b.update!(total: 12.0)             # raises Silth::ORM::StaleObjectError
+a.update!(total: Decimal.new("10.00"))   # lock_version 0 → 1
+b.update!(total: Decimal.new("12.00"))   # raises Silth::ORM::StaleObjectError
 ```
 
 Every update and destroy checks that `lock_version` still holds the value read with the record and increments it. Rescue `StaleObjectError`, `reload` and let the user retry. `optimistic_locking column: version` uses another column.
 
 ## Serialization
 
-`post.to_json` writes every non-hidden column plus extra selected columns (`distance`, aggregates). `post.attributes` returns a hash, `post.read_attribute("title")`/`write_attribute` work dynamically.
+`post.to_json` writes every non-hidden column plus extra selected columns (`distance`, aggregates): decimals as strings (`"12.50"`), dates as `"2026-11-27"`, times in RFC 3339 UTC with the precision of `json_time_precision` (see [Decimals & dates](decimals-dates.md)). `post.attributes` returns a hash, `post.read_attribute("title")`/`write_attribute` work dynamically.

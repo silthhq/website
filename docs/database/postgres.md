@@ -70,6 +70,17 @@ Product.where("? = ANY(tags)", "sale")
 Product.where("settings ?? ?", "discount")        # `??` escapes the jsonb `?` operator
 ```
 
+## Prepared statements
+
+Each statement is prepared once per connection and reused: PostgreSQL parses and plans it the first time, later executions only send the parameters. A small LRU cache keeps the last 256 statements of each connection.
+
+```yaml
+url: postgres://app@db/app?statement_cache_size=512     # larger cache
+url: postgres://app@pgbouncer/app?prepared_statements=false
+```
+
+Turn them off behind PgBouncer in transaction mode before 1.21 (a statement prepared on one server connection is unknown to the next). When a migration changes a table that a cached `SELECT *` reads, the statement is prepared again automatically; inside a transaction the error is raised instead (PostgreSQL aborted the transaction), and the next attempt succeeds.
+
 ## Locks, CTEs and LISTEN/NOTIFY
 
 `lock_for_update(skip_locked: true)` powers the database queue. `with_cte` builds common table expressions. The PostgreSQL connection exposes `wait_for_notification` for `LISTEN/NOTIFY` based integrations, and `pubsub: postgres` (config/realtime.yml) relays live components and channels between server nodes over it.

@@ -28,6 +28,6 @@ Crystal is a great language for working with coding agents: the compiler catches
 
 ## Tips for prompting
 
-- Ask the agent to run `crystal tool format` and `silth test` before finishing.
+- Ask the agent to run `silth check` after each change (a type check without a build, seconds), then `crystal tool format` and `silth test` before finishing.
 - Prefer generators (`silth g scaffold …`) and let the agent refine the generated code.
 - Point it to the relevant docs page (`/docs/database/models.md`) for focused context.

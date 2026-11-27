@@ -89,7 +89,7 @@ Tables, columns, defaults, primary keys (composite too), indexes (partial, GIN, 
 
 `string` (`limit:`), `text`, `integer`, `bigint`, `smallint`, `float`, `real`, `decimal`, `boolean`, `date`, `time`, `timestamp`/`datetime`, `json`/`jsonb`, `binary`, `uuid`, `inet`, `citext`, `string_array`, `integer_array`, `float_array`, `vector(name, dimensions)`, `tsvector(name, from: [...])`. Options: `null:`, `default:` (`:now`, `:uuid`, `:empty_json` or a literal), `unique:`, `index:`, `limit:`, `comment:`.
 
-Types map to the best native type of each database (e.g. `json` → `JSONB` on PostgreSQL, `JSON` on MySQL, `TEXT` on SQLite).
+Types map to the best native type of each database (e.g. `json` → `JSONB` on PostgreSQL, `JSON` on MySQL, `TEXT` on SQLite). `t.decimal :total, precision: 12, scale: 2` pairs with `column total : Decimal`, `t.date` with `column x : Date` ([Decimals & dates](decimals-dates.md)).
 
 ## Schema helpers
 

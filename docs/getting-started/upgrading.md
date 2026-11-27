@@ -60,6 +60,13 @@ Every `vX.Y.Z` tag of [silthhq/framework](https://github.com/silthhq/framework/r
 3. Change the constraint in `shard.yml` (`~> 0.2.0`) and the image tags in the `Dockerfile` (`builder:0.2`, `runtime:0.2`).
 4. `shards update silth`, install the matching CLI (`curl -fsSL https://silth.dev/install.sh | sh`), then `silth db:migrate` and `silth test`.
 
+## Upgrading to 0.2
+
+- `NUMERIC`/`DECIMAL` columns are read as `Decimal` and `DATE` columns as `Date`. Model columns typed `Float64` or `Time` keep working (values are converted); raw rows from `Silth::DB.query` hold the new types. Move money columns to `Decimal` ([Decimals & dates](../database/decimals-dates.md)).
+- `JSON::Serializable` structs and hashes now write times with milliseconds, like models: `json_time_precision: 0` in `config/app.yml` keeps the previous format.
+- Generators stop on an unknown field type: check scripts that call `silth g` with custom types.
+- Optional: `workers:` in `config/server.yml`, `config/auth.yml` for Argon2id, `silth check` in your workflow.
+
 ## Following main
 
 `silth new blog --edge` (or `branch: main` in `shard.yml`) tracks the development branch and the `edge` images. Its documentation is at [/docs/edge](/docs/edge/getting-started/introduction).

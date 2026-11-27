@@ -11,10 +11,13 @@ Every file in `config/*.yml` becomes a top-level key named after the file: `conf
 name: Blog
 url: ${APP_URL:-http://localhost:3000}
 debug: false
+json_time_precision: 3          # fractional digits of times in JSON: 0, 3, 6, 9 or auto
 
 when@development:
   debug: true
 ```
+
+Other files of a new app: `server.yml` (`host`, `port`, `workers`), `database.yml`, `auth.yml` (password hashing, JWT, login throttling), `cache.yml`, `queue.yml`, `mail.yml`, `storage.yml`, `session.yml`, `security.yml`, `logging.yml`, `profiler.yml`, `telemetry.yml`. Every key has a default.
 
 ## Environment variables
 

@@ -19,6 +19,20 @@ Checklist:
 - Health check: `GET /up` (add checks with `Silth.health_check("redis") { Silth::Redis.new.ping }`).
 - Zero-downtime restarts: `server.reuse_port: true` lets a new process bind before the old one exits.
 
+## Worker processes
+
+Crystal runs one thread per process. To use every core, start several processes on the same port:
+
+```yaml
+# config/server.yml
+workers: ${WEB_CONCURRENCY:-1}
+
+when@production:
+  workers: ${WEB_CONCURRENCY:-auto}   # one per CPU
+```
+
+`WEB_CONCURRENCY=4 bin/<app>` or `bin/cli server --workers 4` overrides it. The first process becomes a supervisor: it starts the workers with `SO_REUSEPORT` (the Linux kernel spreads connections between them), restarts a worker that dies, and on `INT`/`TERM` stops them gracefully. Each worker has its own database pool, so `pool × workers` must stay under the database's `max_connections`. macOS accepts the option but does not balance connections: use workers on Linux.
+
 ## Docker
 
 Every app ships a multi-stage `Dockerfile` built on the official images: `ghcr.io/silthhq/builder` (Crystal on Alpine with the static libraries and the `silth` CLI) compiles static binaries, `ghcr.io/silthhq/runtime` (Alpine, CA certificates, time zones, an unprivileged `app` user, a `HEALTHCHECK` on `/up`) runs them. The result is a small image with `/app/bin/<app>` (web) and `/app/bin/cli` (migrations, workers, scheduler).

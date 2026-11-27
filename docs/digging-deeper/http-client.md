@@ -23,6 +23,26 @@ Silth::HTTPClient.post("https://hooks.example.com", json: {event: "deploy"})
 
 Outgoing calls carry the `traceparent` header when telemetry is enabled and appear in the profiler.
 
+## Files and binary bodies
+
+`multipart:` sends `multipart/form-data`: fields and files, a name may repeat. `body:` takes a `String` or `Bytes`, and `response.bytes` returns a binary response:
+
+```crystal
+pdf = Silth::HTTPClient.new
+  .base_url("http://gotenberg:3000")
+  .post("/forms/chromium/convert/html", multipart: [
+    {"files", Silth::HTTPClient::File.new("index.html", html, "text/html")},
+    {"files", Silth::HTTPClient::File.new("logo.png", logo_bytes, "image/png")},
+    {"paperWidth", "8.27"},
+  ])
+  .raise_for_status!
+  .bytes
+
+Silth::HTTPClient.new.post(url, body: xml.to_slice)   # raw body, set Content-Type with .header
+```
+
+A `Hash(String, String | HTTPClient::File)` works too when no name repeats.
+
 ## Faking in tests
 
 ```crystal

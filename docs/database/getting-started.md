@@ -23,7 +23,11 @@ connections:
     url: postgres://user:pass@db.internal:5432/analytics?sslmode=require
 ```
 
-URLs: `postgres://user:pass@host:5432/db?sslmode=prefer`, `mysql://user:pass@host:3306/db?ssl=true`, `sqlite3://./db/dev.sqlite3`, `sqlite3::memory:`. MySQL also takes `statement_cache_size`, `prepared_statements` and `server_public_key` ([details](/docs/database/mysql#options)).
+URLs: `postgres://user:pass@host:5432/db?sslmode=prefer`, `mysql://user:pass@host:3306/db?ssl=true`, `sqlite3://./db/dev.sqlite3`, `sqlite3::memory:`. PostgreSQL and MySQL take `statement_cache_size` and `prepared_statements` ([PostgreSQL](postgres.md#prepared-statements), [MySQL](mysql.md#options)), MySQL also `server_public_key`.
+
+Each connection has a pool of `pool` connections shared by the fibers of the process (`timeout` seconds to get one, 5 by default). The pool is fair: when more fibers want a connection than there are, a fiber that has waited more than a millisecond gets the next released connection before any newcomer, which keeps the slowest requests close to the median. With several [worker processes](../tooling/deployment.md#worker-processes), each has its own pool: keep `pool × workers` under the database's `max_connections`.
+
+Column values come back as Crystal types: `NUMERIC`/`DECIMAL` as `Decimal`, `DATE` as `Date`, timestamps as `Time` ([Decimals & dates](decimals-dates.md)).
 
 ## Raw queries
 
