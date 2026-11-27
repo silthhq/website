@@ -31,6 +31,7 @@ q.count                 q.exists?               q.pluck(:title)
 q.sum(:views)           q.avg(:rating)          q.min(:price)     q.max(:price)
 q.first?                q.paginate(page, 20)    q.each_batch(500) { |rows| … }
 q.group_by(:status).having("COUNT(*) > ?", 3)
+q.count_by(:status)     # => {"draft" => 4, "sent" => 2}
 q.with_cte("recent", "SELECT * FROM posts WHERE created_at > ?", 1.day.ago)
 q.lock_for_update(skip_locked: true)
 q.explain

@@ -17,6 +17,16 @@ Requests with `Authorization: Bearer` are exempt. Exclude webhooks in `config/se
 
 `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Cross-Origin-Opener-Policy`, `Permissions-Policy` and HSTS (production) are set by default. The Content-Security-Policy in `config/security.yml` can use `{nonce}`; use `csp_nonce` for inline scripts (framework scripts already carry it).
 
+`headers:` adds headers or replaces the defaults; an empty value removes one:
+
+```yaml
+# config/security.yml
+headers:
+  X-Frame-Options: DENY
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: ""
+```
+
 ## Rate limiting
 
 ```crystal

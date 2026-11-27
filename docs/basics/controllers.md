@@ -55,6 +55,8 @@ A filter that responds (redirect, render, head) halts the request.
 
 If an action does not respond, Silth sends `204 No Content`.
 
+Downloads keep any file name: `send_data(pdf, "facture-été.pdf", "application/pdf")` writes an ASCII fallback and the exact UTF-8 name (`filename*`, RFC 6266). Both `send_data` and `send_file` take `headers:` for anything else (`headers: {"Cache-Control" => "no-store"}`).
+
 ## Layouts
 
 The layout is `layouts/application` unless a `LAYOUT` constant says otherwise (`LAYOUT = "layouts/admin"` or `LAYOUT = false`). Override per call with `render "x", layout: false`.
