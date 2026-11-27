@@ -25,7 +25,7 @@
       <a href="<%= locale == "fr" ? "/fr" : "/" %>#features"><%= t("nav.features") %></a>
       <a href="/docs/tooling/ai"><%= t("nav.ai") %></a>
       <a href="<%= GITHUB %>" rel="noopener">GitHub</a>
-      <a class="lang" href="<%= other_locale == "fr" ? "/fr" : "/en" %>" hreflang="<%= other_locale %>"><%= other_locale.upcase %></a>
+      <a class="lang" href="<%= other_locale == "fr" ? "/fr" : "/" %>" hreflang="<%= other_locale %>"><%= other_locale.upcase %></a>
       <a class="btn btn-primary btn-sm" href="/docs/getting-started/installation"><%= t("nav.start") %></a>
     </nav>
   </header>
@@ -37,7 +37,7 @@
         <p class="muted"><%= t("footer.tagline") %></p>
       </div>
       <nav>
-        <a href="/docs">Docs</a><a href="/llms.txt">llms.txt</a><a href="/docs/api" rel="nofollow" hidden>API</a><a href="<%= GITHUB %>">GitHub</a>
+        <a href="/docs">Docs</a><a href="/llms.txt">llms.txt</a><a href="<%= GITHUB %>">GitHub</a>
       </nav>
       <p class="muted small"><%= t("footer.made") %> · Silth <%= Silth::VERSION %> · MIT</p>
     </div>

@@ -127,7 +127,7 @@ module Site::Docs
           file = File.join(@root, "#{slug}.md")
           next nil unless File.exists?(file)
           source = File.read(file)
-          Page.new(slug, title, source, Silth::Markdown.parse(rewrite_links(source)), self)
+          Page.new(slug, title, source, Silth::Markdown.parse(rewrite_links(source, slug)), self)
         end
         pages.concat(list)
         sections << Section.new(title, list)
@@ -142,8 +142,16 @@ module Site::Docs
     end
 
     # Relative links between Markdown files become URLs of this version.
-    private def rewrite_links(source : String) : String
-      source.gsub(/\]\((\.\.?\/)?([\w\-\/]+)\.md(#[\w\-]+)?\)/) { |_, m| "](#{prefix}/#{m[2]}#{m[3]?})" }
+    # Turns links to Markdown files into page URLs of this version:
+    # `../basics/routing.md#groups` and `basics/routing.md` name a page from the
+    # docs root, `upgrading.md` a page next to the current one (*slug*).
+    private def rewrite_links(source : String, slug : String) : String
+      section = File.dirname(slug)
+      source.gsub(/\]\((\.\.?\/)?([\w\-\/]+)\.md(#[\w\-]+)?\)/) do |_, m|
+        target = m[2]
+        target = "#{section}/#{target}" unless target.includes?('/') || section == "."
+        "](#{prefix}/#{target}#{m[3]?})"
+      end
     end
 
     def search_index : String
